@@ -4,6 +4,7 @@ import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { db } from "@/lib/firebase"; // Adjust path based on your project
 import { useAuth } from "@/context/AuthContext";
 import GeminiCard from "@/components/GeminiCard"; // Custom hook or however you're handling auth
+import { Timestamp } from "firebase/firestore"
 
 interface Report {
     id: string;
@@ -13,7 +14,7 @@ interface Report {
     short_term_analysis: string[];
     long_term_analysis: string[];
     key_takeaway: string[];
-    savedAt: any;
+    savedAt: Timestamp;
 }
 
 export default function ReportsPage() {

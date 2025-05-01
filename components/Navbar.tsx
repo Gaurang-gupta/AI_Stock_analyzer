@@ -68,9 +68,10 @@ export function Navbar() {
                     }
                     <ModeToggle />
                     <div>
-                        {isLoggedIn && ((user?.photoURL !== null && user?.photoURL !== "") ?
+                        {isLoggedIn && (
+                            (user !== null && user.photoURL !== null && user.photoURL !== "") ?
                             <Image
-                                src={user?.photoURL!}
+                                src={user?.photoURL}
                                 alt={"User image"}
                                 height={40}
                                 width={40}
@@ -96,9 +97,9 @@ export function Navbar() {
                     </Button>
 
                     <div>
-                        {isLoggedIn && ((user?.photoURL !== null && user?.photoURL !== "") ?
+                        {isLoggedIn && ((user !== null && user.photoURL !== null && user.photoURL !== "") ?
                             <Image
-                                src={user?.photoURL!}
+                                src={user?.photoURL}
                                 alt={"User image"}
                                 height={40}
                                 width={40}

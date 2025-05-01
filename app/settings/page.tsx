@@ -7,8 +7,9 @@ import { auth, db } from "@/lib/firebase";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
+import { updatePassword } from "firebase/auth";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { FirebaseError } from "firebase/app"
 
 export default function AccountPage() {
     const [userEmail, setUserEmail] = useState<string>("");
@@ -61,22 +62,14 @@ export default function AccountPage() {
             toast.success("Password updated successfully!");
             setNewPassword("");
             setConfirmNewPassword("");
-        } catch (error: any) {
-            console.error(error);
-
-            if (error.code === "auth/requires-recent-login") {
+        } catch (error: unknown) {
+            const firebaseError = error as FirebaseError;
+            if (firebaseError.code === "auth/requires-recent-login") {
                 toast.error("Please reauthenticate to update your password.");
-
-                // You can trigger reauthentication flow if you want
-                // Here's a simple way (for later, if you want):
-                // const credential = EmailAuthProvider.credential(auth.currentUser.email!, currentPassword);
-                // await reauthenticateWithCredential(auth.currentUser, credential);
-                // Then retry updatePassword after successful reauthentication
-
-            } else if (error.code === "auth/weak-password") {
+            } else if (firebaseError.code === "auth/weak-password") {
                 toast.error("The new password is too weak. Please choose a stronger password.");
             } else {
-                toast.error(error.message || "Failed to update password. Please try again.");
+                toast.error(firebaseError.message || "Failed to update password. Please try again.");
             }
         }
     };
@@ -105,7 +98,7 @@ export default function AccountPage() {
                 setNewUserName("")
                 fetchUsername()
             }
-        } catch (error: any) {
+        } catch (error) {
             toast.error("Error updating username");
         }
     };

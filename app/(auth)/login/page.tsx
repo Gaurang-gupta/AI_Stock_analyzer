@@ -76,9 +76,9 @@ export default function LoginPage() {
 
             toast.success("Successfully logged in! Redirecting...");
             router.push("/");
-        } catch (err: any) {
-            setError(err.message || "Google Sign-in failed");
-            toast.error(err.message || "Google Sign-in failed");
+        } catch (err) {
+            setError("Google Sign-in failed");
+            toast.error("Google Sign-in failed");
         } finally {
             setLoading(false);
         }
@@ -160,9 +160,8 @@ function ForgotPasswordModal() {
             await sendPasswordResetEmail(auth, email);
             toast.success("Password reset email sent. Check your inbox!");
             setEmail("");
-        } catch (error: any) {
-            console.error(error);
-            toast.error(error.message || "Failed to send reset email.");
+        } catch (error) {
+            toast.error("Failed to send reset email.");
         } finally {
             setLoading(false);
         }

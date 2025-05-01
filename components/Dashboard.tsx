@@ -15,7 +15,7 @@ import {
 } from "@/lib/firebase/stocks";
 import { StockCard } from "@/components/StockCard";
 import {fetchMultipleStockQuotes, fetchStockQuote} from "@/lib/fetchStockData";
-import {collection, getDocs} from "firebase/firestore";
+import {collection, DocumentData, getDocs} from "firebase/firestore";
 import {db} from "@/lib/firebase";
 import { toast } from "sonner"
 import {generateStockAnalysis} from "@/lib/gemini/generateStockAnalysis";
@@ -26,10 +26,10 @@ export default function DashboardPage() {
     const router = useRouter();
     const [symbol, setSymbol] = useState("")
     const [stockName, setStockName] = useState("")
-    const [savedStocks, setSavedStocks] = useState<any[]>([])
-    const [recentStocks, setRecentStocks] = useState<any[]>([]);
+    const [savedStocks, setSavedStocks] = useState<DocumentData[]>([])
+    const [recentStocks, setRecentStocks] = useState<DocumentData[]>([]);
     const [loading, setLoading] = useState(true);
-    const [currentPlan,  setCurrentPlan] = useState<{name: any, renewalDate: any}>({name: "", renewalDate: ""});
+    const [currentPlan,  setCurrentPlan] = useState<{name: string, renewalDate: string}>({name: "", renewalDate: ""});
     const [analysis, setAnalysis] = useState<{
         title: string;
         given_data: string[];
@@ -66,7 +66,7 @@ export default function DashboardPage() {
                 if(plan) {
                     const current = {
                         name: plan.plan!,
-                        renewalDate: plan?.renewalDate || 'upgrade to unlock more features',
+                        renewalDate: 'upgrade to unlock more features',
                     }
                     setCurrentPlan(current)
                 }
@@ -153,7 +153,7 @@ export default function DashboardPage() {
                 userId: user.uid,
             });
 
-            setAnalysis(result);
+            if(result !== undefined) setAnalysis(result);
             await addRecentStock(user.uid, { symbol, name: stockName });
             getRecentStocks();
             toast.success("Analysis complete and saved.");
@@ -266,7 +266,7 @@ export default function DashboardPage() {
                             ))}
                         </ul>
                     ) : (
-                        <p className="text-muted-foreground">You haven't saved any stocks yet.</p>
+                        <p className="text-muted-foreground">You haven&apos;t saved any stocks yet.</p>
                     )}
                 </CardContent>
             </Card>

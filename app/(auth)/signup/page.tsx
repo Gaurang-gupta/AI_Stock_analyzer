@@ -72,9 +72,9 @@ export default function SignupPage() {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             await handleDocumentCreation(userCredential.user)
-        } catch (err: any) {
-            setError(err.message || "Something went wrong");
-            toast.error(err.message || "Something went wrong");
+        } catch (err) {
+            setError("Something went wrong");
+            toast.error("Something went wrong");
         } finally {
             setLoading(false);
         }

@@ -1,12 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card"
-
 const GeminiCard = ({ title, given_data, short_term_analysis, long_term_analysis, key_takeaway, stockSymbol, savedAt }: {
     title: string;
     given_data: string[];
     short_term_analysis: string[];
     long_term_analysis: string[];
     key_takeaway: string[];
-    savedAt?: any;
+    savedAt?: string;
     stockSymbol?: string;
 }) => {
     return (

@@ -93,7 +93,6 @@ export const generateStockAnalysis = async ({
             long_term_analysis: long_term_analysis,
             key_takeaway: key_takeaway,
         }
-        console.log(analysis);
 
         // Save the generated report to Firestore
         await saveReport(userId!, stockSymbol, analysis);
@@ -101,7 +100,6 @@ export const generateStockAnalysis = async ({
         return analysis;
     } catch (error) {
         console.error("Error generating stock analysis:", error);
-        throw error;
     }
 };
 
@@ -126,7 +124,6 @@ export const saveReport = async (userId: string, stockSymbol: string, analysis: 
         });
     } catch (error) {
         console.error("Error saving report:", error);
-        throw error;
     }
 };
 
