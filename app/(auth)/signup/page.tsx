@@ -73,6 +73,7 @@ export default function SignupPage() {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             await handleDocumentCreation(userCredential.user)
         } catch (err) {
+            console.log(err)
             setError("Something went wrong");
             toast.error("Something went wrong");
         } finally {
@@ -88,9 +89,10 @@ export default function SignupPage() {
         try {
             const userCredential = await signInWithPopup(auth, provider);
             await handleDocumentCreation(userCredential.user)
-        } catch (err: any) {
-            setError(err.message || "Google Sign-up failed");
-            toast.error(err.message || "Google Sign-up failed");
+        } catch (err) {
+            console.log(err)
+            setError("Google Sign-up failed");
+            toast.error("Google Sign-up failed");
         } finally {
             setLoading(false);
         }

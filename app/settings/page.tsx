@@ -81,8 +81,8 @@ export default function AccountPage() {
                 toast("Account deleted.");
                 router.push("/")
             }
-        } catch (error: any) {
-            console.error(error.message);
+        } catch (error) {
+            console.error(error);
             toast.error("Error deleting account.");
         }
     };
@@ -99,6 +99,7 @@ export default function AccountPage() {
                 fetchUsername()
             }
         } catch (error) {
+            console.log(error);
             toast.error("Error updating username");
         }
     };

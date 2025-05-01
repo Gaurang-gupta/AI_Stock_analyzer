@@ -38,9 +38,10 @@ export default function LoginPage() {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             router.push("/");
-        } catch (err: any) {
-            setError(err.message || "Something went wrong");
-            toast.error(err.message || "Something went wrong");
+        } catch (err) {
+            console.log(err);
+            setError("Something went wrong");
+            toast.error("Something went wrong");
         } finally {
             setLoading(false);
         }
@@ -77,6 +78,7 @@ export default function LoginPage() {
             toast.success("Successfully logged in! Redirecting...");
             router.push("/");
         } catch (err) {
+            console.log(err);
             setError("Google Sign-in failed");
             toast.error("Google Sign-in failed");
         } finally {
@@ -161,6 +163,7 @@ function ForgotPasswordModal() {
             toast.success("Password reset email sent. Check your inbox!");
             setEmail("");
         } catch (error) {
+            console.log(error);
             toast.error("Failed to send reset email.");
         } finally {
             setLoading(false);
