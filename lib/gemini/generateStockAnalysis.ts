@@ -61,7 +61,7 @@ export const getCompanyFinancials = async (symbol: string) => {
         const response = await axios.get(url, { params });
         return response.data.data.slice(0, 3);
     } catch (error) {
-        console.error("Error fetching company news:", error);
+        console.error("Error fetching company financials:", error);
         return [];
     }
 };
@@ -80,28 +80,67 @@ export const getCompanyEPSDetails = async (symbol: string) => {
         const response = await axios.get(url, { params });
         return response.data;
     } catch (error) {
-        console.error("Error fetching company news:", error);
+        console.error("Error fetching company EPS details:", error);
         return [];
     }
 };
 
 
-export const generateStockAnalysis = async ({
-                                                stockSymbol,
-                                                userId
-                                            }: {
+export const getCompanyBasicFinancials = async (symbol: string) => {
+    const apiKey = process.env.NEXT_PUBLIC_FINNHUB_API_KEY; // Replace with your actual API key
+
+    const url = `https://finnhub.io/api/v1/stock/metric`;
+    const params = {
+        symbol,
+        token: apiKey,
+        metric: "all",
+    };
+
+    try {
+        const response = await axios.get(url, { params });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching company basic financials:", error);
+        return [];
+    }
+};
+
+export const getCompanyRecommendationTrends = async (symbol: string) => {
+    const apiKey = process.env.NEXT_PUBLIC_FINNHUB_API_KEY; // Replace with your actual API key
+
+    const url = `https://finnhub.io/api/v1/stock/recommendation`;
+    const params = {
+        symbol,
+        token: apiKey,
+    };
+
+    try {
+        const response = await axios.get(url, { params });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching company recommendation trends:", error);
+        return [];
+    }
+};
+
+
+export const generateStockAnalysis = async ({stockSymbol, userId}: {
     stockSymbol: string;
     userId: string;
 }) => {
     try {
         const news = await getCompanyNews(stockSymbol);
-        const companyFinancials = getCompanyFinancials(stockSymbol);
-        const epsDetails = getCompanyEPSDetails(stockSymbol);
+        const companyFinancials = await getCompanyFinancials(stockSymbol);
+        const epsDetails = await getCompanyEPSDetails(stockSymbol);
+        const companyBasicFinancials = await getCompanyBasicFinancials(stockSymbol);
+        const companyRecommendation = await getCompanyRecommendationTrends(stockSymbol);
         const prompt = `
       Analyze the stock ${stockSymbol} with the following details:
       - news: \n ${news}
       - Company_financials_as_reported: \n ${companyFinancials}
       - EPS details: \n ${epsDetails}
+      - Basic Financials: \n ${companyBasicFinancials}
+      - Recommendations: \n ${companyRecommendation}
 
        Provide a short-term and long-term analysis in a points. Always make sure to give me these points. 
       
