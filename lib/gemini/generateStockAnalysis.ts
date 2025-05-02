@@ -46,6 +46,45 @@ export const getCompanyNews = async (symbol: string) => {
     }
 };
 
+export const getCompanyFinancials = async (symbol: string) => {
+    const apiKey = process.env.NEXT_PUBLIC_FINNHUB_API_KEY; // Replace with your actual API key
+
+
+    const url = `https://finnhub.io/api/v1/stock/financials-reported`;
+    const params = {
+        symbol,
+        freq: "quarterly",
+        token: apiKey,
+    };
+
+    try {
+        const response = await axios.get(url, { params });
+        return response.data.data.slice(0, 3);
+    } catch (error) {
+        console.error("Error fetching company news:", error);
+        return [];
+    }
+};
+
+export const getCompanyEPSDetails = async (symbol: string) => {
+    const apiKey = process.env.NEXT_PUBLIC_FINNHUB_API_KEY; // Replace with your actual API key
+
+
+    const url = `https://finnhub.io/api/v1/stock/earnings`;
+    const params = {
+        symbol,
+        token: apiKey,
+    };
+
+    try {
+        const response = await axios.get(url, { params });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching company news:", error);
+        return [];
+    }
+};
+
 
 export const generateStockAnalysis = async ({
                                                 stockSymbol,
@@ -56,14 +95,18 @@ export const generateStockAnalysis = async ({
 }) => {
     try {
         const news = await getCompanyNews(stockSymbol);
+        const companyFinancials = getCompanyFinancials(stockSymbol);
+        const epsDetails = getCompanyEPSDetails(stockSymbol);
         const prompt = `
       Analyze the stock ${stockSymbol} with the following details:
       - news: \n ${news}
+      - Company_financials_as_reported: \n ${companyFinancials}
+      - EPS details: \n ${epsDetails}
 
        Provide a short-term and long-term analysis in a points. Always make sure to give me these points. 
       
        - **Title**
-       - **Given Data**
+       - **Given Data** -- Only give news data in this section but take all the provided data into consideration for making a decision regarding short term analysis, long term analysis and key takeaways.
        - **Short term analysis**
        - **Long term analysis**
        - **Key Takeaway**
