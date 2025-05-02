@@ -33,7 +33,7 @@ Firestore rules restrict users to accessing only their own data.
 ## Getting Started
 
 1. Clone the repo
-git clone [https://github.com/your-username/ai-stock-research.git](https://github.com/Gaurang-gupta/AI_Stock_analyzer.git)
+git clone https://github.com/Gaurang-gupta/AI_Stock_analyzer.git
 cd ai-stock-research
 
 2. npm install
