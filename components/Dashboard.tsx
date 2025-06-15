@@ -43,7 +43,7 @@ export default function DashboardPage() {
     const [analysis, setAnalysis] = useState<{
         title: string;
         news_data: string[];
-        company_financials: Object[];
+        company_financials: object[];
         company_recommendations: RecommendationDataPoint[];
         short_term_analysis: string[];
         long_term_analysis: string[];
