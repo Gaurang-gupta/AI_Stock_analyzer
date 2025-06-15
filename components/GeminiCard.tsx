@@ -34,7 +34,7 @@ const GeminiCard = (
         <Card>
             {/* if no analysis is present */}
             {news_data.length === 0 && short_term_analysis.length === 0 && long_term_analysis.length === 0 &&
-                key_takeaway.length === 0 ?
+                key_takeaway.length === 0 && company_recommendations.length === 0 ?
                 <p className="text-center">
                     Gemini insights will appear here after you analyze a stock.
                 </p>
@@ -63,7 +63,7 @@ const GeminiCard = (
                 {/* Financial Data */}
                 {/*<FinancialChart data={company_financials}/>*/}
                 {/* Recommendation Chart */}
-                {company_recommendations != null && company_recommendations.length === 0 &&
+                {company_recommendations != null && company_recommendations.length > 0 &&
                 <RecommendationChart data={company_recommendations}/>
                 }
 

@@ -55,6 +55,8 @@ export default function ReportsPage() {
 
     if (loading) return <p className="text-center mt-8">Loading reports...</p>;
 
+    console.log("Reports =" , reports);
+
     return (
         <div className="max-w-7xl mx-auto px-4 py-8">
             <h1 className="text-2xl font-semibold mb-6">Saved Reports</h1>
