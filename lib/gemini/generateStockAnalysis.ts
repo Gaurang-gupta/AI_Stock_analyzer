@@ -134,6 +134,7 @@ export const generateStockAnalysis = async ({stockSymbol, userId}: {
         const epsDetails = await getCompanyEPSDetails(stockSymbol);
         const companyBasicFinancials = await getCompanyBasicFinancials(stockSymbol);
         const companyRecommendation = await getCompanyRecommendationTrends(stockSymbol);
+        console.log(companyFinancials[0])
         const prompt = `
       Analyze the stock ${stockSymbol} with the following details:
       - news: \n ${news}
@@ -153,7 +154,7 @@ export const generateStockAnalysis = async ({stockSymbol, userId}: {
        Give me a json object with these fields.
     `;
 
-        const {object: {title, given_data, short_term_analysis, long_term_analysis, key_takeaway}} = await generateObject({
+        const {object: {title, short_term_analysis, long_term_analysis, key_takeaway}} = await generateObject({
             model: google("gemini-2.0-flash-001", {
                 structuredOutputs: false,
             }),
@@ -170,14 +171,32 @@ export const generateStockAnalysis = async ({stockSymbol, userId}: {
 
         const analysis = {
             title: title,
-            given_data: given_data,
+            news_data: news,
+            company_financials: companyFinancials,
+            company_recommendations: companyRecommendation,
             short_term_analysis:short_term_analysis,
             long_term_analysis: long_term_analysis,
             key_takeaway: key_takeaway,
         }
 
         // Save the generated report to Firestore
-        await saveReport(userId!, stockSymbol, analysis);
+        try {
+            const docRef = doc(db, "users", userId, "reports", stockSymbol);
+            await setDoc(docRef, {
+                savedAt: serverTimestamp(),
+                stockSymbol,
+                title: analysis.title,
+                // given_data: analysis.given_data,
+                news_data: news,
+                company_financials: companyFinancials,
+                company_recommendations: companyRecommendation,
+                short_term_analysis: analysis.short_term_analysis,
+                long_term_analysis: analysis.long_term_analysis,
+                key_takeaway: analysis.key_takeaway,
+            });
+        } catch (error) {
+            console.error("Error saving report:", error);
+        }
 
         return analysis;
     } catch (error) {
@@ -186,26 +205,27 @@ export const generateStockAnalysis = async ({stockSymbol, userId}: {
 };
 
 
-export const saveReport = async (userId: string, stockSymbol: string, analysis: {
-    title: string;
-    given_data: string[];
-    short_term_analysis: string[];
-    long_term_analysis: string[];
-    key_takeaway: string[];
-}) => {
-    try {
-        const docRef = doc(db, "users", userId, "reports", stockSymbol);
-        await setDoc(docRef, {
-            savedAt: serverTimestamp(),
-            stockSymbol,
-            title: analysis.title,
-            given_data: analysis.given_data,
-            short_term_analysis: analysis.short_term_analysis,
-            long_term_analysis: analysis.long_term_analysis,
-            key_takeaway: analysis.key_takeaway,
-        });
-    } catch (error) {
-        console.error("Error saving report:", error);
-    }
-};
+// export const saveReport = async (userId: string, stockSymbol: string, news: string[], analysis: {
+//     title: string;
+//     given_data: string[];
+//     short_term_analysis: string[];
+//     long_term_analysis: string[];
+//     key_takeaway: string[];
+// }) => {
+//     try {
+//         const docRef = doc(db, "users", userId, "reports", stockSymbol);
+//         await setDoc(docRef, {
+//             savedAt: serverTimestamp(),
+//             stockSymbol,
+//             title: analysis.title,
+//             given_data: analysis.given_data,
+//             news_data: news,
+//             short_term_analysis: analysis.short_term_analysis,
+//             long_term_analysis: analysis.long_term_analysis,
+//             key_takeaway: analysis.key_takeaway,
+//         });
+//     } catch (error) {
+//         console.error("Error saving report:", error);
+//     }
+// };
 

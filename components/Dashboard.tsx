@@ -21,6 +21,16 @@ import { toast } from "sonner"
 import {generateStockAnalysis} from "@/lib/gemini/generateStockAnalysis";
 import GeminiCard from "@/components/GeminiCard";
 
+interface RecommendationDataPoint {
+    buy: number;
+    hold: number;
+    period: string; // or `Date` if you're parsing it into a Date object
+    sell: number;
+    strongBuy: number;
+    strongSell: number;
+    symbol: string;
+}
+
 export default function DashboardPage() {
     const { user } = useAuth();
     const router = useRouter();
@@ -32,13 +42,17 @@ export default function DashboardPage() {
     const [currentPlan,  setCurrentPlan] = useState<{name: string, renewalDate: string}>({name: "", renewalDate: ""});
     const [analysis, setAnalysis] = useState<{
         title: string;
-        given_data: string[];
+        news_data: string[];
+        company_financials: Object[];
+        company_recommendations: RecommendationDataPoint[];
         short_term_analysis: string[];
         long_term_analysis: string[];
         key_takeaway: string[];
     }>({
         title: "",
-        given_data: [],
+        news_data: [],
+        company_financials: [],
+        company_recommendations: [],
         short_term_analysis: [],
         long_term_analysis: [],
         key_takeaway: [],
@@ -137,7 +151,9 @@ export default function DashboardPage() {
             setLoading(true);
             setAnalysis({
                 title: "",
-                given_data: [],
+                news_data: [],
+                company_financials: [],
+                company_recommendations: [],
                 short_term_analysis: [],
                 long_term_analysis: [],
                 key_takeaway: [],
@@ -237,7 +253,8 @@ export default function DashboardPage() {
                     {analysis
                         ? <GeminiCard
                             title={analysis.title}
-                            given_data={analysis.given_data}
+                            news_data={analysis.news_data}
+                            company_recommendations={analysis.company_recommendations}
                             short_term_analysis={analysis.short_term_analysis}
                             long_term_analysis={analysis.long_term_analysis}
                             key_takeaway={analysis.key_takeaway}
