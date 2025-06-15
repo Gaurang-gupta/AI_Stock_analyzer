@@ -6,11 +6,22 @@ import { useAuth } from "@/context/AuthContext";
 import GeminiCard from "@/components/GeminiCard"; // Custom hook or however you're handling auth
 import { Timestamp } from "firebase/firestore"
 
+interface RecommendationDataPoint {
+    buy: number;
+    hold: number;
+    period: string; // or `Date` if you're parsing it into a Date object
+    sell: number;
+    strongBuy: number;
+    strongSell: number;
+    symbol: string;
+}
+
 interface Report {
     id: string;
     title: string;
     stockSymbol: string;
-    given_data: string[];
+    news_data: string[];
+    company_recommendations: RecommendationDataPoint[];
     short_term_analysis: string[];
     long_term_analysis: string[];
     key_takeaway: string[];
@@ -59,7 +70,8 @@ export default function ReportsPage() {
                         >
                             <GeminiCard
                                 title={report.title}
-                                given_data={report.given_data}
+                                news_data={report.news_data}
+                                company_recommendations={report.company_recommendations}
                                 short_term_analysis={report.short_term_analysis}
                                 long_term_analysis={report.long_term_analysis}
                                 key_takeaway={report.key_takeaway}
