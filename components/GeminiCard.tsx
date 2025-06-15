@@ -63,7 +63,9 @@ const GeminiCard = (
                 {/* Financial Data */}
                 {/*<FinancialChart data={company_financials}/>*/}
                 {/* Recommendation Chart */}
+                {company_recommendations != null && company_recommendations.length === 0 &&
                 <RecommendationChart data={company_recommendations}/>
+                }
 
                 {/* Short Term Analysis */}
                 {short_term_analysis != null && short_term_analysis.length > 0 &&
