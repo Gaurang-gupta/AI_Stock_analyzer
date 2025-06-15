@@ -43,7 +43,6 @@ export default function DashboardPage() {
     const [analysis, setAnalysis] = useState<{
         title: string;
         news_data: string[];
-        company_financials: object[];
         company_recommendations: RecommendationDataPoint[];
         short_term_analysis: string[];
         long_term_analysis: string[];
@@ -51,7 +50,6 @@ export default function DashboardPage() {
     }>({
         title: "",
         news_data: [],
-        company_financials: [],
         company_recommendations: [],
         short_term_analysis: [],
         long_term_analysis: [],
@@ -152,7 +150,6 @@ export default function DashboardPage() {
             setAnalysis({
                 title: "",
                 news_data: [],
-                company_financials: [],
                 company_recommendations: [],
                 short_term_analysis: [],
                 long_term_analysis: [],

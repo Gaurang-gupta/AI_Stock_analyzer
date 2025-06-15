@@ -172,7 +172,6 @@ export const generateStockAnalysis = async ({stockSymbol, userId}: {
         const analysis = {
             title: title,
             news_data: news,
-            company_financials: companyFinancials,
             company_recommendations: companyRecommendation,
             short_term_analysis:short_term_analysis,
             long_term_analysis: long_term_analysis,
@@ -188,7 +187,6 @@ export const generateStockAnalysis = async ({stockSymbol, userId}: {
                 title: analysis.title,
                 // given_data: analysis.given_data,
                 news_data: news,
-                company_financials: companyFinancials,
                 company_recommendations: companyRecommendation,
                 short_term_analysis: analysis.short_term_analysis,
                 long_term_analysis: analysis.long_term_analysis,
