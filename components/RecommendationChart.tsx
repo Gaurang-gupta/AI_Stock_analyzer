@@ -22,7 +22,7 @@ interface RecommendationDataPoint {
     symbol: string;
 }
 
-const RecommendationChart = ({ data }: { data: RecommendationDataPoint[] }) => {
+const RecommendationChart = ({ data, title }: { data: RecommendationDataPoint[], title:string }) => {
     const formattedData = data.map((entry) => ({
         period: entry.period,
         "Strong Buy": entry.strongBuy,
@@ -35,7 +35,7 @@ const RecommendationChart = ({ data }: { data: RecommendationDataPoint[] }) => {
     return (
         <Card className="w-full shadow-md">
             <CardHeader>
-                <CardTitle>Analyst Recommendations - AAPL</CardTitle>
+                <CardTitle>Analyst Recommendations - {title}</CardTitle>
             </CardHeader>
             <CardContent className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">

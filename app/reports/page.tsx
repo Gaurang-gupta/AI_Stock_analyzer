@@ -4,29 +4,7 @@ import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { db } from "@/lib/firebase"; // Adjust path based on your project
 import { useAuth } from "@/context/AuthContext";
 import GeminiCard from "@/components/GeminiCard"; // Custom hook or however you're handling auth
-import { Timestamp } from "firebase/firestore"
-
-interface RecommendationDataPoint {
-    buy: number;
-    hold: number;
-    period: string; // or `Date` if you're parsing it into a Date object
-    sell: number;
-    strongBuy: number;
-    strongSell: number;
-    symbol: string;
-}
-
-interface Report {
-    id: string;
-    title: string;
-    stockSymbol: string;
-    news_data: string[];
-    company_recommendations: RecommendationDataPoint[];
-    short_term_analysis: string[];
-    long_term_analysis: string[];
-    key_takeaway: string[];
-    savedAt: Timestamp;
-}
+import type { Report } from "@/types";
 
 export default function ReportsPage() {
     const [reports, setReports] = useState<Report[]>([]);
@@ -74,6 +52,7 @@ export default function ReportsPage() {
                                 title={report.title}
                                 news_data={report.news_data}
                                 company_recommendations={report.company_recommendations}
+                                eps_details={report.eps_details}
                                 short_term_analysis={report.short_term_analysis}
                                 long_term_analysis={report.long_term_analysis}
                                 key_takeaway={report.key_takeaway}

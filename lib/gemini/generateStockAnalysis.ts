@@ -134,7 +134,6 @@ export const generateStockAnalysis = async ({stockSymbol, userId}: {
         const epsDetails = await getCompanyEPSDetails(stockSymbol);
         const companyBasicFinancials = await getCompanyBasicFinancials(stockSymbol);
         const companyRecommendation = await getCompanyRecommendationTrends(stockSymbol);
-        console.log(companyFinancials[0])
         const prompt = `
       Analyze the stock ${stockSymbol} with the following details:
       - news: \n ${news}
@@ -173,6 +172,7 @@ export const generateStockAnalysis = async ({stockSymbol, userId}: {
             title: title,
             news_data: news,
             company_recommendations: companyRecommendation,
+            eps_details: epsDetails,
             short_term_analysis:short_term_analysis,
             long_term_analysis: long_term_analysis,
             key_takeaway: key_takeaway,
@@ -185,9 +185,9 @@ export const generateStockAnalysis = async ({stockSymbol, userId}: {
                 savedAt: serverTimestamp(),
                 stockSymbol,
                 title: analysis.title,
-                // given_data: analysis.given_data,
                 news_data: news,
                 company_recommendations: companyRecommendation,
+                eps_details: epsDetails,
                 short_term_analysis: analysis.short_term_analysis,
                 long_term_analysis: analysis.long_term_analysis,
                 key_takeaway: analysis.key_takeaway,
@@ -201,29 +201,3 @@ export const generateStockAnalysis = async ({stockSymbol, userId}: {
         console.error("Error generating stock analysis:", error);
     }
 };
-
-
-// export const saveReport = async (userId: string, stockSymbol: string, news: string[], analysis: {
-//     title: string;
-//     given_data: string[];
-//     short_term_analysis: string[];
-//     long_term_analysis: string[];
-//     key_takeaway: string[];
-// }) => {
-//     try {
-//         const docRef = doc(db, "users", userId, "reports", stockSymbol);
-//         await setDoc(docRef, {
-//             savedAt: serverTimestamp(),
-//             stockSymbol,
-//             title: analysis.title,
-//             given_data: analysis.given_data,
-//             news_data: news,
-//             short_term_analysis: analysis.short_term_analysis,
-//             long_term_analysis: analysis.long_term_analysis,
-//             key_takeaway: analysis.key_takeaway,
-//         });
-//     } catch (error) {
-//         console.error("Error saving report:", error);
-//     }
-// };
-

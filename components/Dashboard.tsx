@@ -20,16 +20,7 @@ import {db} from "@/lib/firebase";
 import { toast } from "sonner"
 import {generateStockAnalysis} from "@/lib/gemini/generateStockAnalysis";
 import GeminiCard from "@/components/GeminiCard";
-
-interface RecommendationDataPoint {
-    buy: number;
-    hold: number;
-    period: string; // or `Date` if you're parsing it into a Date object
-    sell: number;
-    strongBuy: number;
-    strongSell: number;
-    symbol: string;
-}
+import type { EarningsDatum, RecommendationDataPoint} from "@/types";
 
 export default function DashboardPage() {
     const { user } = useAuth();
@@ -44,6 +35,7 @@ export default function DashboardPage() {
         title: string;
         news_data: string[];
         company_recommendations: RecommendationDataPoint[];
+        eps_details: EarningsDatum[],
         short_term_analysis: string[];
         long_term_analysis: string[];
         key_takeaway: string[];
@@ -51,6 +43,7 @@ export default function DashboardPage() {
         title: "",
         news_data: [],
         company_recommendations: [],
+        eps_details: [],
         short_term_analysis: [],
         long_term_analysis: [],
         key_takeaway: [],
@@ -151,6 +144,7 @@ export default function DashboardPage() {
                 title: "",
                 news_data: [],
                 company_recommendations: [],
+                eps_details: [],
                 short_term_analysis: [],
                 long_term_analysis: [],
                 key_takeaway: [],
@@ -252,6 +246,7 @@ export default function DashboardPage() {
                             title={analysis.title}
                             news_data={analysis.news_data}
                             company_recommendations={analysis.company_recommendations}
+                            eps_details={analysis.eps_details}
                             short_term_analysis={analysis.short_term_analysis}
                             long_term_analysis={analysis.long_term_analysis}
                             key_takeaway={analysis.key_takeaway}

@@ -1,19 +1,14 @@
 import { Card, CardContent } from "@/components/ui/card"
 import RecommendationChart from "@/components/RecommendationChart";
-interface RecommendationDataPoint {
-    buy: number;
-    hold: number;
-    period: string; // or `Date` if you're parsing it into a Date object
-    sell: number;
-    strongBuy: number;
-    strongSell: number;
-    symbol: string;
-}
+import EarningsChart from "@/components/EarningsChart";
+import type { EarningsDatum, RecommendationDataPoint} from "@/types";
+
 const GeminiCard = (
     {
         title,
         news_data,
         company_recommendations,
+        eps_details,
         short_term_analysis,
         long_term_analysis,
         key_takeaway,
@@ -23,6 +18,7 @@ const GeminiCard = (
         title: string;
         news_data: string[];
         company_recommendations: RecommendationDataPoint[];
+        eps_details: EarningsDatum[];
         short_term_analysis: string[];
         long_term_analysis: string[];
         key_takeaway: string[];
@@ -33,8 +29,9 @@ const GeminiCard = (
     return (
         <Card>
             {/* if no analysis is present */}
+
             {news_data.length === 0 && short_term_analysis.length === 0 && long_term_analysis.length === 0 &&
-                key_takeaway.length === 0 && company_recommendations.length === 0 ?
+                key_takeaway.length === 0 && company_recommendations.length === 0 && eps_details.length == 0?
                 <p className="text-center">
                     Gemini insights will appear here after you analyze a stock.
                 </p>
@@ -60,11 +57,14 @@ const GeminiCard = (
                 </div>
                 }
 
-                {/* Financial Data */}
-                {/*<FinancialChart data={company_financials}/>*/}
                 {/* Recommendation Chart */}
                 {company_recommendations != null && company_recommendations.length > 0 &&
-                <RecommendationChart data={company_recommendations}/>
+                <RecommendationChart data={company_recommendations} title={title}/>
+                }
+
+                {/* Earnings chart */}
+                { eps_details != null && eps_details.length > 0 &&
+                <EarningsChart eps_details={eps_details} title={title}/>
                 }
 
                 {/* Short Term Analysis */}
