@@ -123,6 +123,49 @@ export const getCompanyRecommendationTrends = async (symbol: string) => {
     }
 };
 
+function getDates() {
+    const today = new Date();
+
+    // Get today's date in 'yyyy-mm-dd' format
+    const todayDateString = today.toISOString().slice(0, 10);
+
+    // Calculate the date one month ago
+    const oneMonthAgo = new Date(today);
+    oneMonthAgo.setMonth(today.getMonth() - 1);
+
+    // Handle edge case for months with different number of days (e.g., March 31 -> February 28/29)
+    if (oneMonthAgo.getDate() !== today.getDate()) {
+        oneMonthAgo.setDate(0);
+    }
+
+    // Get the date one month ago in 'yyyy-mm-dd' format
+    const oneMonthAgoString = oneMonthAgo.toISOString().slice(0, 10);
+
+    return {
+        today: todayDateString,
+        oneMonthAgo: oneMonthAgoString
+    };
+}
+
+export const getIPOCalendar = async () => {
+    const apiKey = process.env.NEXT_PUBLIC_FINNHUB_API_KEY; // Replace with your actual API key
+
+    const url = `https://finnhub.io/api/v1/calendar/ipo`;
+    const { today, oneMonthAgo } =  getDates();
+    const params = {
+        from: oneMonthAgo,
+        to: today,
+        token: apiKey,
+    };
+
+    try {
+        const response = await axios.get(url, { params });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching company recommendation trends:", error);
+        return [];
+    }
+}
 
 export const generateStockAnalysis = async ({stockSymbol, userId}: {
     stockSymbol: string;
@@ -152,7 +195,6 @@ export const generateStockAnalysis = async ({stockSymbol, userId}: {
        
        Give me a json object with these fields.
     `;
-
         const {object: {title, short_term_analysis, long_term_analysis, key_takeaway}} = await generateObject({
             model: google("gemini-2.0-flash-001", {
                 structuredOutputs: false,

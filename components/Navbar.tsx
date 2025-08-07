@@ -135,6 +135,12 @@ export function Navbar() {
                             }`}>
                                 Billing
                             </Link>
+
+                            <Link href="/ipoCalendar" onClick={() => setMenuOpen(false)} className={`text-sm font-medium ${
+                                pathname === "/ipoCalendar" ? "text-primary" : "text-muted-foreground"
+                            }`}>
+                                IPO Calendar
+                            </Link>
                         </>
                     }
 

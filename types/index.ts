@@ -33,3 +33,14 @@ export type Report = {
     key_takeaway: string[];
     savedAt: Timestamp;
 }
+
+export type IPOData = {
+    date: string;
+    exchange: string | null;
+    name: string;
+    numberOfShares: number | null;
+    price: string | null;
+    status: string;
+    symbol: string;
+    totalSharesValue: number;
+}

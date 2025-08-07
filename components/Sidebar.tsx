@@ -66,6 +66,16 @@ export default function Sidebar({ isLoggedIn }: { isLoggedIn: boolean }) {
                         </Button>
                         <Button
                             variant="ghost"
+                            onClick={() => {router.push("/ipoCalendar"); setOpen(false);}}
+                            className={`${
+                                pathname === "/ipoCalendar" ? "text-primary" : "text-muted-foreground"
+                            }`}
+                        >
+                            IPO Calendar
+                        </Button>
+
+                        <Button
+                            variant="ghost"
                             onClick={() => {router.push("/pricing"); setOpen(false);}}
                             className={`${
                                 pathname === "/pricing" ? "text-primary" : "text-muted-foreground"
