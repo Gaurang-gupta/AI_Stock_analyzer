@@ -1,5 +1,8 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+# For full code along follow: 
+https://www.youtube.com/@gauranggupta6422
+
 # 🧠 AI-Powered Stock Research Assistant
 A web application that provides in-depth, AI-generated stock analysis using real-time financial data and company news. Built with Next.js, Firebase, and Gemini API, this project helps users make informed investment decisions effortlessly.
 
